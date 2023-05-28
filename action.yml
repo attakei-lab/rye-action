@@ -8,14 +8,24 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Install Rye'
+    - name: 'Install Rye (Linux)'
+      if: ${{ runner.os == 'Linux' }}
       shell: bash
       run: |
         wget https://github.com/mitsuhiko/rye/releases/latest/download/rye-x86_64-linux.gz
         gunzip rye-x86_64-linux.gz
         chmod +x rye-x86_64-linux
         mv rye-x86_64-linux /usr/local/bin/rye
-    - name: 'Set up python'
+    - name: 'Install Rye (macOS)'
+      if: ${{ runner.os == 'macOS' }}
+      shell: bash
+      run: |
+        wget https://github.com/mitsuhiko/rye/releases/latest/download/rye-x86_64-macos.gz
+        gunzip rye-x86_64-macos.gz
+        chmod +x rye-x86_64-macos
+        mv rye-x86_64-macos /usr/local/bin/rye
+    - name: 'Set up python (*nix)'
+      if: contains(fromJSON('["Linux", "macOS"]'), runner.os)
       shell: bash
       run: |
         rye pin ${{ inputs.python-version }}
