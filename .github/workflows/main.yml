@@ -1,0 +1,12 @@
+on: push
+
+jobs:
+  test-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: attakei-lab/rye-action@main
+        with:
+          python-version: '3.11'
+      - run:
+          rye show

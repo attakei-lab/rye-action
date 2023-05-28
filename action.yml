@@ -1,0 +1,21 @@
+name: '@attakei-lab/rye'
+description: 'Setup and use Rye'
+author: 'Kazuya Takei <myself@attakei.net>'
+inputs:
+  python-version:
+    description: 'Version Spec of the node version to use.  Examples: 10.6.x, 10.15.1, >=10.15.0'
+    default: ''
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Install Rye'
+      shell: bash
+      run: |
+        wget https://github.com/mitsuhiko/rye/releases/latest/download/rye-x86_64-linux.gz
+        gunzip rye-x86_64-linux.gz
+        chmod +x rye-x86_64-linux
+        mv rye-x86_64-linux /usr/local/bin/rye
+    - name: 'Set up python'
+      shell: bash
+      run: |
+        rye pin ${{ inputs.python-version }}
