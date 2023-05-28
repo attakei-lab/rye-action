@@ -24,8 +24,20 @@ runs:
         gunzip rye-x86_64-macos.gz
         chmod +x rye-x86_64-macos
         mv rye-x86_64-macos /usr/local/bin/rye
+    - name: 'Install Rye (Windows)'
+      if: ${{ runner.os == 'Windows' }}
+      shell: powershell
+      # TODO: Is this right way?
+      run: |
+        Invoke-WebRequest -Uri "https://github.com/mitsuhiko/rye/releases/latest/download/rye-x86_64-windows.exe" -OutFile "C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps\rye.exe"
     - name: 'Set up python (*nix)'
       if: contains(fromJSON('["Linux", "macOS"]'), runner.os)
       shell: bash
       run: |
         rye pin ${{ inputs.python-version }}
+    - name: 'Set up python (Windows)'
+      if: ${{ runner.os == 'Windows' }}
+      shell: powershell
+      run: |
+        rye.exe pin ${{ inputs.python-version }}
+        echo $Env:Path
